@@ -1,0 +1,18 @@
+
+version: '3'
+services:
+
+    mysql_standalone:
+        image: mysql
+        container_name: mysql_standalone
+        network_mode: bridge
+        restart: always
+        tty: true
+        ports:
+            - 3306:3306
+        environment:
+            - TZ=Asia/Shanghai
+            - MYSQL_ROOT_PASSWORD=root
+        volumes:
+            - /opt/push/mysql/standalone/my.cnf:/etc/mysql/my.cnf
+            - /opt/push/mysql/standalone/data:/var/lib/mysql

@@ -1,0 +1,94 @@
+version: "3"
+services:
+
+    # sharding replica set ( default port : 27018 )
+    # primary
+    mongo_cluster_shrs1:
+        image: mongo
+        container_name: mongo_cluster_shrs1
+        network_mode: bridge
+        restart: always
+        tty: true
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - /opt/push/mongo/cluster/shrs1:/data
+        command: mongod --noauth --dbpath /data/db --shardsvr --replSet shrs
+
+    # secondary
+    mongo_cluster_shrs2:
+        image: mongo
+        container_name: mongo_cluster_shrs2
+        network_mode: bridge
+        restart: always
+        tty: true
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - /opt/push/mongo/cluster/shrs2:/data
+        command: mongod --noauth --dbpath /data/db --shardsvr --replSet shrs
+
+    # arbiter
+    mongo_cluster_shrs3:
+        image: mongo
+        container_name: mongo_cluster_shrs3
+        network_mode: bridge
+        restart: always
+        tty: true
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - /opt/push/mongo/cluster/shrs3:/data
+        command: mongod --noauth --dbpath /data/db --shardsvr --replSet shrs
+
+    # config server replica set ( default port : 27019 )
+    mongo_cluster_csrs1:
+        image: mongo
+        container_name: mongo_cluster_csrs1
+        network_mode: bridge
+        restart: always
+        tty: true
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - /opt/push/mongo/cluster/csrs1:/data
+        command: mongod --noauth --dbpath /data/db --configsvr --replSet csrs
+
+    mongo_cluster_csrs2:
+        image: mongo
+        container_name: mongo_cluster_csrs2
+        network_mode: bridge
+        restart: always
+        tty: true
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - /opt/push/mongo/cluster/csrs2:/data
+        command: mongod --noauth --dbpath /data/db --configsvr --replSet csrs
+
+    mongo_cluster_csrs3:
+        image: mongo
+        container_name: mongo_cluster_csrs3
+        network_mode: bridge
+        restart: always
+        tty: true
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - /opt/push/mongo/cluster/csrs3:/data
+        command: mongod --noauth --dbpath /data/db --configsvr --replSet csrs
+
+    # mongos router
+    mongos:
+        image: mongo
+        container_name: mongos
+        network_mode: bridge
+        restart: always
+        tty: true
+        environment:
+            - TZ=Asia/Shanghai
+        links:
+            - mongo_cluster_csrs1
+            - mongo_cluster_csrs2
+            - mongo_cluster_csrs3
+        command: mongos --noauth --configdb csrs/mongo_cluster_csrs1:27019,mongo_cluster_csrs2:27019,mongo_cluster_csrs3:27019

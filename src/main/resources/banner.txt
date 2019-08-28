@@ -1,0 +1,7 @@
+${Ansi.GREEN}
+////////////////////////////////////////////////////////////
+//                                                        //
+//              Spring Boot Application Demo              //
+//                                                        //
+////////////////////////////////////////////////////////////
+${Ansi.GREEN}Spring Boot -${Ansi.BLUE}${spring-boot.formatted-version}${Ansi.DEFAULT}

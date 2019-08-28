@@ -1,0 +1,24 @@
+.gitbook-link {
+    display: none !important;
+}
+
+@media (min-width: 1440px) {
+    .page-inner {
+        max-width: 960px;
+        padding: 20px 15px 40px 15px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .page-inner {
+        max-width: 1024px;
+        padding: 20px 15px 40px 15px;
+    }
+}
+
+@media (min-width: 1920px) {
+    .page-inner {
+        max-width: 1440px;
+        padding: 20px 15px 40px 15px;
+    }
+}

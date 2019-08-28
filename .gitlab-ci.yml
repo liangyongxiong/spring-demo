@@ -1,0 +1,77 @@
+# gitlab-ci configuration
+
+variables:
+  WORKSPACE: "/data/workspace"    # 项目路径
+  REGISTRY: "172.16.1.13:5000"    # 私仓地址
+  DOCS: "/data/docs/demo"         # 文档路径
+
+stages:
+  - build     # 编译构建
+  - docs      # 生成文档
+  - deploy    # 部署项目
+
+run_build_for_develop:
+  stage: build
+  only:
+    - develop-off
+  tags:
+    - develop-runner
+  cache:
+    key: jar-develop
+    paths:
+      - build/libs
+  script:
+    - id
+    - pwd
+    - which java
+    - java -version
+    - echo $JAVA_HOME
+    - which gradle
+    - gradle -version
+    - echo $GRADLE_HOME
+    - gitlab-runner --version
+    - echo $CI_PROJECT_DIR
+    - echo $CI_PROJECT_NAME
+    - echo $CI_COMMIT_REF_NAME
+    - rm -rf src/main/resources/application*.yml
+    - gradle clean
+    - gradle bootJar
+    - cd build/libs
+    - mv *.jar application.jar
+
+run_docs_for_develop:
+  stage: docs
+  only:
+    - develop-off
+  tags:
+    - develop-runner
+  script:
+    - rsync -rzv docs/* $DOCS
+    - cd $DOCS
+    - rm -rf _book
+    - gitbook install
+    - gitbook build
+    - docker restart openresty
+
+run_deploy_for_develop:
+  stage: deploy
+  only:
+    - develop-off
+  tags:
+    - develop-runner
+  cache:
+    key: jar-develop
+    paths:
+      - build/libs
+    policy: pull
+  allow_failure: true
+  script:
+    - cp docker/Dockerfile build/libs
+    - cd build/libs
+    - docker build -t $CI_PROJECT_NAME:$CI_COMMIT_REF_NAME .
+    - docker tag $CI_PROJECT_NAME:$CI_COMMIT_REF_NAME $REGISTRY/$CI_PROJECT_NAME:$CI_COMMIT_REF_NAME
+    - docker push $REGISTRY/$CI_PROJECT_NAME:$CI_COMMIT_REF_NAME
+    - docker pull $REGISTRY/$CI_PROJECT_NAME:$CI_COMMIT_REF_NAME
+    - docker-compose down
+    - docker-compose up -d
+    - docker images | grep '<none>' | awk '{ print $3 }' | xargs docker rmi

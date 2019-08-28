@@ -1,0 +1,74 @@
+version: "3"
+services:
+
+    redis_cluster_n1:
+        image: redis
+        container_name: redis_cluster_n1
+        network_mode: bridge
+        restart: always
+        tty: true
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - /opt/push/redis/cluster/n1:/data
+        command: redis-server /data/redis.conf
+
+    redis_cluster_n2:
+        image: redis
+        container_name: redis_cluster_n2
+        network_mode: bridge
+        restart: always
+        tty: true
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - /opt/push/redis/cluster/n2:/data
+        command: redis-server /data/redis.conf
+
+    redis_cluster_n3:
+        image: redis
+        container_name: redis_cluster_n3
+        network_mode: bridge
+        restart: always
+        tty: true
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - /opt/push/redis/cluster/n3:/data
+        command: redis-server /data/redis.conf
+
+    redis_cluster_n4:
+        image: redis
+        container_name: redis_cluster_n4
+        network_mode: bridge
+        restart: always
+        tty: true
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - /opt/push/redis/cluster/n4:/data
+        command: redis-server /data/redis.conf
+
+    redis_cluster_n5:
+        image: redis
+        container_name: redis_cluster_n5
+        network_mode: bridge
+        restart: always
+        tty: true
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - /opt/push/redis/cluster/n5:/data
+        command: redis-server /data/redis.conf
+
+    redis_cluster_n6:
+        image: redis
+        container_name: redis_cluster_n6
+        network_mode: bridge
+        restart: always
+        tty: true
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - /opt/push/redis/cluster/n6:/data
+        command: redis-server /data/redis.conf

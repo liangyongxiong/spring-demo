@@ -1,0 +1,41 @@
+{
+    "gitbook": ">=3.0.0",
+    "title": "接口文档",
+    "description": "",
+    "isbn": "978-7-000-00000-0",
+    "author": "liangyongxiong",
+    "language": "zh-hans",
+    "root": "./",
+    "links" : {
+        "sidebar" : {
+        }
+    },
+    "styles": {
+        "website": "styles/website.css"
+    },
+    "structure": {
+        "readme": "README.md",
+        "summary": "SUMMARY.md"
+    },
+    "plugins": [
+        "toggle-chapters"
+    ],
+    "pluginsConfig": {
+        "sharing": {
+            "weibo": true,
+            "google": false,
+            "facebook": false,
+            "twitter": false,
+            "instapaper": false,
+            "vk": false,
+            "all": [
+                "facebook",
+                "twitter",
+                "google",
+                "weibo",
+                "instapaper",
+                "vk"
+            ]
+        }
+    }
+}

@@ -1,0 +1,6 @@
+{
+  "workers": [
+    { "name": "worker1", "age": 35 },
+    { "name": "worker2", "age": 45 },
+  ]
+}
